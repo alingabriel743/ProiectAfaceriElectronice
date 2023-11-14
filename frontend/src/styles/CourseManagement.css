@@ -1,0 +1,27 @@
+.list-group-item {
+  position: relative;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 15px;
+  padding-right: 90px;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-details {
+  flex-grow: 1;
+}
+
+.btn-danger {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}
+
+.course-title,
+.course-description {
+  margin-bottom: 0;
+}

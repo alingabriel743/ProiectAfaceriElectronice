@@ -1,0 +1,14 @@
+.total-section {
+  padding: 1rem;
+  border-top: 1px solid #eaeaea;
+}
+
+.total-section h4 {
+  margin: 0;
+}
+
+.btn-success {
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+}
