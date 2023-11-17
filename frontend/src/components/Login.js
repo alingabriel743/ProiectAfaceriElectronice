@@ -27,7 +27,6 @@ const Login = () => {
         localStorage.setItem("token", data.token);
         localStorage.setItem("userId", data._id);
         localStorage.setItem("username", data.username);
-        console.log(data);
         dispatch(login({ isAdmin: data.isAdmin }));
         navigate("/dashboard");
         toast.success("Logged in successfully!");

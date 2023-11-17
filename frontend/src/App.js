@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   BrowserRouter as Router,
   Route,
@@ -8,9 +8,9 @@ import {
 } from "react-router-dom";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import { useDispatch } from "react-redux";
 import Dashboard from "./components/Dashboard";
 import CourseManagement from "./components/CourseManagement";
+import EditCourse from "./components/EditCourse";
 import NavigationBar from "./components/NavigationBar";
 import EnrolledCourses from "./components/EnrolledCourses";
 import { selectIsLoggedIn, selectIsAdmin } from "./redux/authSlice";
@@ -23,6 +23,7 @@ function App() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const isAdmin = useSelector(selectIsAdmin);
   const dispatch = useDispatch();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
@@ -48,10 +49,9 @@ function App() {
           <>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/course-management" element={<CourseManagement />} />
-            <Route
-              path="/enrolled-courses"
-              element={<EnrolledCourses />}
-            />{" "}
+            <Route path="/edit-course/:id" element={<EditCourse />} />{" "}
+            {/* New route for editing courses */}
+            <Route path="/enrolled-courses" element={<EnrolledCourses />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="*" element={<Navigate replace to="/dashboard" />} />
@@ -59,10 +59,7 @@ function App() {
         ) : (
           <>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route
-              path="/enrolled-courses"
-              element={<EnrolledCourses />}
-            />{" "}
+            <Route path="/enrolled-courses" element={<EnrolledCourses />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="*" element={<Navigate replace to="/dashboard" />} />

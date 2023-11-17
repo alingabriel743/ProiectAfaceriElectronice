@@ -1,8 +1,9 @@
-// CourseManagement.js
 import React, { useState, useEffect } from "react";
-import "../styles/CourseManagement.css"; // Make sure to create this CSS file
+import { useNavigate } from "react-router-dom";
+import "../styles/CourseManagement.css";
 import { removeFromCart } from "../redux/cartSlice";
 import { useDispatch } from "react-redux";
+
 const CourseManagement = () => {
   const [courses, setCourses] = useState([]);
   const [newCourse, setNewCourse] = useState({
@@ -15,6 +16,7 @@ const CourseManagement = () => {
     skillLevel: "",
   });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:8080/api/courses")
@@ -25,7 +27,6 @@ const CourseManagement = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
     if (name === "instructorName" || name === "instructorBio") {
       setNewCourse((prevCourse) => ({
         ...prevCourse,
@@ -44,25 +45,26 @@ const CourseManagement = () => {
 
   const handleAddCourse = (e) => {
     e.preventDefault();
-
     fetch("http://localhost:8080/api/courses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newCourse),
-    }).then((addedCourse) => {
-      setCourses([...courses, addedCourse]);
-      setNewCourse({
-        instructor: { name: "", bio: "" },
-        title: "",
-        description: "",
-        price: "",
-        language: "",
-        duration: "",
-        skillLevel: "",
+    })
+      .then((response) => response.json())
+      .then((addedCourse) => {
+        setCourses([...courses, addedCourse]);
+        setNewCourse({
+          instructor: { name: "", bio: "" },
+          title: "",
+          description: "",
+          price: "",
+          language: "",
+          duration: "",
+          skillLevel: "",
+        });
       });
-    });
   };
 
   const handleRemoveCourse = (courseId) => {
@@ -79,6 +81,10 @@ const CourseManagement = () => {
       .catch((error) => {
         console.error("Error deleting course:", error);
       });
+  };
+
+  const handleEditCourse = (courseId) => {
+    navigate(`/edit-course/${courseId}`);
   };
 
   return (
@@ -211,15 +217,23 @@ const CourseManagement = () => {
                 <small className="course-price">Price: ${course.price}</small>
               </div>
             </div>
-            <button
-              className="btn btn-danger btn-sm"
-              onClick={() => {
-                handleRemoveCourse(course._id);
-                dispatch(removeFromCart(course._id));
-              }}
-            >
-              Remove
-            </button>
+            <div>
+              <button
+                className="btn btn-primary btn-sm mb-2"
+                onClick={() => handleEditCourse(course._id)}
+              >
+                Edit
+              </button>
+              <button
+                className="btn btn-danger btn-sm"
+                onClick={() => {
+                  handleRemoveCourse(course._id);
+                  dispatch(removeFromCart(course._id));
+                }}
+              >
+                Remove
+              </button>
+            </div>
           </div>
         ))}
       </div>
